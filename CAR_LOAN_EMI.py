@@ -196,7 +196,6 @@ with col1:
     st.markdown("<h3 style='color:#FFFFFF;'>Vehicle Loan Requirements</h3>", unsafe_allow_html=True)
     p_amount = st.number_input("Vehicle Loan Amount (₹)", min_value=10000, value=500000, step=10000)
     
-    # Tenure Type Selection
     tenure_type = st.radio("Select Tenure Type", ["Years", "Months"], horizontal=True)
     
     if tenure_type == "Years":
@@ -204,7 +203,9 @@ with col1:
     else:
         tenure_val = st.slider("Tenure (Months)", min_value=1, max_value=120, value=60)
     
-    int_rate = st.number_input("Interest Rate (% P.A.)", min_value=1.0, max_value=25.0, value=9.0, step=0.1)
+    # --- പലിശ നിരക്ക് പരിധി 50% ആക്കി മാറ്റി ---
+    int_rate = st.number_input("Interest Rate (% P.A.)", min_value=1.0, max_value=50.0, value=9.0, step=0.1)
+    
     calc_method = st.radio("Interest Calculation Method", ["Diminishing", "Flat"], horizontal=True)
     
     st.write("<br>", unsafe_allow_html=True)
@@ -235,7 +236,6 @@ if calculate_btn:
         df_schedule = pd.DataFrame(res['schedule'])
         st.dataframe(df_schedule.style.format("{:,}"), use_container_width=True, hide_index=True)
 
-        # Excel Export logic remains same, adjusting tenure display
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             summary_data = {
